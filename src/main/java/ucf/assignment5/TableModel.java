@@ -23,7 +23,7 @@ public class TableModel extends errorMessages {
 
     private editTableController editor;
     private searchTableController searcher;
-    //private homeScreenController home;
+    private homeScreenController home;
     
     public void initEdit(editTableController controller) {
         editor = controller;
@@ -32,7 +32,7 @@ public class TableModel extends errorMessages {
         searcher = controller;
     }
     public void initHome(homeScreenController controller) {
-        //home = controller;
+        home = controller;
     }
 
     public void addItemCheck() {
@@ -52,8 +52,8 @@ public class TableModel extends errorMessages {
                             valueFormatError()
                         ) : nameFormatError()
                     ) : itemAlreadyExists()
-                ) : serialFormatError() )
-            {
+                ) : serialFormatError() 
+            ){
                 addItem(name, serial, value);
             } else {
                 itemNotAdded();
@@ -241,7 +241,7 @@ public class TableModel extends errorMessages {
 
             for(listItem I : tableData) {
 
-                if( I.getSerialNumber().equals(get) ) {
+                if( I.getSerialNumber().contains(get) ) {
                     returnArr.add(I);
                 }
             }
@@ -250,13 +250,43 @@ public class TableModel extends errorMessages {
 
             for(listItem I : tableData) {
 
-                if( I.getName().equals(get) ) {
+                if( I.getName().contains(get) ) {
                     returnArr.add(I);
                 }
             }
 
         } else {
             return returnArr;
+        }
+        return returnArr;
+    }
+
+    public ObservableList<listItem> dynamicSearcher() {
+
+        String searchingFor = home.searchBar.getText();
+
+        ObservableList<listItem> returnArr = FXCollections.observableArrayList();
+
+        List<Integer> indicies = new ArrayList<>();
+
+        if(searchingFor.equals(null) || searchingFor.isBlank()) {
+            //do nothing
+        } else {
+            //
+            for(listItem i : tableData) {
+                if(i.getSerialNumber().contains(searchingFor)) {
+                    if(!indicies.contains(serials.indexOf(i.getSerialNumber()))) {
+                        returnArr.add(i);
+                        indicies.add(serials.indexOf(searchingFor));
+                    }
+                }
+                if(i.getName().contains(searchingFor)) {
+                    if(!indicies.contains(names.indexOf(i.getName()))) {
+                        returnArr.add(i);
+                        indicies.add(names.indexOf(searchingFor));
+                    }
+                }
+            }
         }
         return returnArr;
     }

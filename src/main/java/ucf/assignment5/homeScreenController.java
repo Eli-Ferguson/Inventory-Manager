@@ -8,6 +8,8 @@ package ucf.assignment5;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,9 +25,7 @@ public class homeScreenController implements Initializable{
     private Stage stage;
     private TableModel model;
 
-    @FXML TextField valueAddItem;
-    @FXML TextField serialNumberAddItem;
-    @FXML TextField nameAddItem;
+    @FXML TextField searchBar;
 
     @FXML TableView<listItem> wholeTableObject;
 
@@ -51,6 +51,14 @@ public class homeScreenController implements Initializable{
         updateTable();
 
         model.initHome(this);
+
+        searchBar.textProperty().addListener((obserable, oldText, NewText) -> {
+            dynamicSearch();
+        });
+    }
+
+    private void dynamicSearch() {
+        changeTableToFoundItems();
     }
 
     @FXML
@@ -96,6 +104,20 @@ public class homeScreenController implements Initializable{
         System.out.println("Help");
 
         model.help();
+    }
+
+    public void searchTable(ActionEvent actionEvent) {
+        System.out.println("Search button hit homescreen");
+
+        changeTableToFoundItems();
+    }
+
+    private void changeTableToFoundItems() {
+        ObservableList<listItem> searchData = FXCollections.observableArrayList();
+
+        searchData = model.dynamicSearcher();
+
+        wholeTableObject.setItems(searchData);
     }
 
     private void updateTable() {

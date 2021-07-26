@@ -7,20 +7,12 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="550.0" prefWidth="850.0" stylesheets="@TableCSS.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <TableView fx:id="wholeTableObject" nodeOrientation="LEFT_TO_RIGHT">
-        <columns>
-          <TableColumn fx:id="valueColumn" maxWidth="-1.0" minWidth="268.0" prefWidth="-1.0" text="Value" />
-          <TableColumn fx:id="serialNumberColumn" maxWidth="-1.0" minWidth="268.0" prefWidth="-1.0" text="Serial Number" />
-            <TableColumn fx:id="nameColumn" maxWidth="-1.0" minWidth="269.0" prefWidth="-1.0" text="Name" />
-        </columns>
-      </TableView>
-   </center>
    <left>
       <VBox alignment="CENTER" prefWidth="7.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -79,4 +71,22 @@
    <bottom>
       <HBox prefHeight="10.0" BorderPane.alignment="CENTER" />
    </bottom>
+   <center>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="searchBar" onAction="#searchTable" promptText="Enter a Serial Number Or Name" styleClass="textfield">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TableView fx:id="wholeTableObject" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="valueColumn" maxWidth="-1.0" minWidth="268.0" prefWidth="-1.0" text="Value" />
+                <TableColumn fx:id="serialNumberColumn" maxWidth="-1.0" minWidth="268.0" prefWidth="-1.0" text="Serial Number" />
+                  <TableColumn fx:id="nameColumn" maxWidth="-1.0" minWidth="269.0" prefWidth="-1.0" text="Name" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
 </BorderPane>

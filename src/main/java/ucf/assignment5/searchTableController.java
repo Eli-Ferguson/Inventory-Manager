@@ -28,10 +28,6 @@ public class searchTableController implements Initializable{
     @FXML TextField existingSerialNumber;
     @FXML TextField existingName;
 
-    @FXML TextField valueAddItem;
-    @FXML TextField serialNumberAddItem;
-    @FXML TextField nameAddItem;
-
     @FXML TableView<listItem> wholeTableObject;
 
     @FXML TableColumn<listItem, String> valueColumn;
@@ -56,6 +52,13 @@ public class searchTableController implements Initializable{
         updateTable();
 
         model.initSearch(this);
+
+        existingSerialNumber.textProperty().addListener((obserable, oldText, NewText) -> {
+            dynamicSearchSerial();
+        });
+        existingName.textProperty().addListener((obserable, oldText, NewText) -> {
+            dynamicSearchName();
+        });
     }
 
     @FXML
@@ -117,6 +120,14 @@ public class searchTableController implements Initializable{
         changeTableToFoundNames();
 
         blank();
+    }
+
+    private void dynamicSearchSerial() {
+        changeTableToFoundSerials();
+    }
+
+    private void dynamicSearchName() {
+        changeTableToFoundNames();
     }
 
     public void ViewAllButton(ActionEvent actionEvent) {
