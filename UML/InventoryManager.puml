@@ -1,0 +1,307 @@
+@startuml
+
+class Inventory {
+    main()
+        launch()
+    
+    start()
+}
+
+class SceneManager {
+    - Map<String, Scene> Scenes
+    - FXMLLoader loader
+    - Stage primary
+
+    + SceneManager()
+
+    + loader()
+    + getScene()
+
+}
+
+class listItem {
+    - SimpleStringProperty value
+    - SimpleStringProperty name
+    - SimpleStringProperty serialNumber
+
+    + listItem(String VALUE, String NAME, String SERIAL)
+
+    + getValue()
+    + setValue()
+
+    + getName()
+    + setName()
+
+    + getSerialNumber()
+    + setSerialNumber()
+}
+
+class editTableController {
+    - SceneManager manager
+    - Stage stage
+    - TableModel model
+
+    # TextField NameBox
+    # TextField SerialBox
+    # TextField ValueBox
+
+    # TableView<listItem> wholeTableObject
+
+    # TableColumn<listItem, String> valueColumn
+    # TableColumn<listItem, String> serialNumberColumn
+    # TableColumn<listItem, String> nameColumn
+
+    # Button TopButton
+    # Button bottomLeftButton
+    # Button bottomRightButton
+    
+    + editTableController(TableModel Table, SceneManager Manager, Stage Primary)
+
+    + Initialize(URL Location, ResourceBundle Resources)
+
+    + HomeScreenButton()
+    + EditTableButton()
+    + SearchTableButton()
+
+    + saveFile()
+    + loadFile()
+
+    + addItemButton()
+    + removeItemSerialButton()
+    + removeItemNameButton()
+
+    + removeItemSelectedButton()
+    + updateSelectedItem()
+    + deselectItemButton()
+    + clickTableItem()
+
+    - TopButtonManager()
+    - bottomLeftButtonManager()
+    - bottomRightButtonManager()
+
+    - updateTable()
+    - blank()
+    - Selected()
+    - Deselected()
+}
+
+class searchTableController {
+    - SceneManager manager
+    - Stage stage
+    - TableModel model
+
+    # TextField NameBox
+    # TextField SerialBox
+    # TextField ValueBox
+
+    # TableView<listItem> wholeTableObject
+
+    # TableColumn<listItem, String> valueColumn
+    # TableColumn<listItem, String> serialNumberColumn
+    # TableColumn<listItem, String> nameColumn
+    
+    + searchTableController(TableModel Table, SceneManager Manager, Stage Primary)
+
+    + Initialize(URL Location, ResourceBundle Resources)
+    
+    + HomeScreenButton()
+    + EditTableButton()
+    + SearchTableButton()
+
+    + saveFile()
+    + loadFile()
+
+    + searchBySerialButton()
+    + searchByNameButton()
+    + viewAllButton()
+
+    - changeTableToFoundSerials()
+    - changeTableToFoundNames()
+    - updateTable()
+    - blank()
+}
+
+class homeScreenController {
+    - SceneManager manager
+    - Stage stage
+    - TabelModel model
+
+    # TextField valueAddItem
+    # TextField serialNumberAddItem
+    # TextField nameAddItem
+
+    # TableView<listItem> wholeTableObject
+
+    # TableColumn<listItem, String> valueColumn
+    # TableColumn<listItem, String> serialNumberColumn
+    # TableColumn<listItem, String> nameColumn
+
+    + homeScreenController(TableModel Table, SceneManager Manager, Stage Primary)
+
+    + Initialize(URL Location, ResourceBundle Resources)
+
+    + HomeScreenButton()
+    + EditTableButton()
+    + SearchTableButton()
+
+    + saveFile()
+    + loadFile()
+
+    + updateTable()
+}
+
+class TableModel {
+    + ObservableList<listItem> tableData
+    - List<String> serials
+    - List<String> names
+
+    - editTableController editor
+    - searchTableController searcher
+
+    + initEdit()
+    + initSearch()
+
+    + addItem()
+    + updateItem()
+    + removeItemBySerial()
+    + removeItemByName()
+    + removeItemBySelected()
+
+    + getItemsBySerial()
+    + getItemsByName()
+
+    + saveFile()
+    + loadFile()
+
+    - serialCheckComositionRequirements()
+    - serialCheckAlreadyExist()
+    - nameCheck()
+    - valueCheck()
+    - currencyFormat()
+
+}
+
+class fileManager {
+
+    - File currentFile
+    
+    + ObservableList<listItem> currentTable
+
+    + fileManager(ObservableList<listItem> tableData)
+
+    + saveFile()
+    + loadFile()
+
+    - WriteToJSON()
+    - ReadFromJSON()
+
+    - WriteToHTML()
+    - ReadFromHTML()
+
+    - WriteToTSV()
+    - ReadFromTSV()
+    
+    - saveToFileChooser()
+    - loadFromFileChooser()
+
+    - pathCheck()
+}
+
+class errorMessages {
+    - alert()
+
+    + itemAlreadyExists()
+    + serialFormatError()
+    + nameFormatError()
+    + valueFormatError()
+    + blankField()
+    + itemNotAdded()
+    + impossibleError()
+    + noItemsFound()
+    + noItemSelected()
+    + failedToSave()
+    + fileIsEmpty()
+    + failedToLoad()
+}
+
+class HTMLManager {
+    - File file
+    - ObservableList<listItem> list
+
+    + HTMLManager(File newFile, ObservableList<listItem> newList)
+
+    + write()
+    + read()
+
+    - addDiv()
+    - addH1()
+}
+
+class JSONManager {
+    - File file
+    - ObservableList<listItem> list
+
+    + JSONManager(File newFile, ObservableList<listItem> newList)
+
+    + write()
+    + read()
+
+    + pretty()
+}
+
+class TSVManager {
+    - File file
+    - ObservableList<listItem> list
+
+    + TSVManager(File newFile, ObservableList<listItem> newList)
+
+    + write()
+    + read()
+
+    - concatList()
+}
+
+file HomeScreen.fxml {
+
+}
+
+file EditTable.fxml {
+
+}
+
+file SearchTable.fxml {
+
+}
+
+org.javafx.Application --|> Inventory
+Inventory *-- SceneManager
+
+SceneManager *-- editTableController
+SceneManager *-- searchTableController
+SceneManager *-- homeScreenController
+
+editTableController -- EditTable.fxml
+homeScreenController -- HomeScreen.fxml
+searchTableController - SearchTable.fxml
+
+editTableController *--* TableModel
+searchTableController *--* TableModel
+homeScreenController *--* TableModel
+
+TableModel <|- errorMessages
+fileManager <|- errorMessages
+
+TableModel --* fileManager
+
+fileManager o-- TSVManager
+fileManager o-- HTMLManager
+fileManager o-- JSONManager
+
+listItem --o editTableController
+listItem --o searchTableController
+listItem --o TableModel
+listItem -o HTMLManager
+listItem -o JSONManager
+listItem -o TSVManager
+
+@enduml
