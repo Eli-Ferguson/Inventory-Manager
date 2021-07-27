@@ -25,8 +25,7 @@ public class searchTableController implements Initializable{
     private Stage stage;
     private TableModel model;
 
-    @FXML TextField existingSerialNumber;
-    @FXML TextField existingName;
+    @FXML TextField searchBar;
 
     @FXML TableView<listItem> wholeTableObject;
 
@@ -53,11 +52,8 @@ public class searchTableController implements Initializable{
 
         model.initSearch(this);
 
-        existingSerialNumber.textProperty().addListener((obserable, oldText, NewText) -> {
-            dynamicSearchSerial();
-        });
-        existingName.textProperty().addListener((obserable, oldText, NewText) -> {
-            dynamicSearchName();
+        searchBar.textProperty().addListener((obserable, oldText, NewText) -> {
+            dynamicSearch();
         });
     }
 
@@ -106,68 +102,31 @@ public class searchTableController implements Initializable{
         model.help();
     }
 
-    public void searchBySerialButton(ActionEvent actionEvent) {
-        System.out.println("Search by Serial");
+    public void clearSearchBarButton(ActionEvent actionEvent) {
+        searchBar.setText("");
 
-        changeTableToFoundSerials();
-
-        blank();
+        updateTable();
     }
 
-    public void searchByNameButton(ActionEvent actionEvent) {
-        System.out.println("Search by Name");
-
-        changeTableToFoundNames();
-
-        blank();
-    }
-
-    private void dynamicSearchSerial() {
-        changeTableToFoundSerials();
-    }
-
-    private void dynamicSearchName() {
-        changeTableToFoundNames();
+    private void dynamicSearch() {
+        changeTableToFoundItems();
     }
 
     public void ViewAllButton(ActionEvent actionEvent) {
         System.out.println("View All");
 
         updateTable();
-
-        blank();
     }
 
-    private void changeTableToFoundSerials() {
+    private void changeTableToFoundItems() {
         ObservableList<listItem> searchData = FXCollections.observableArrayList();
 
-        searchData = model.getItemsBySerial();
+        searchData = model.dynamicSearcher();
 
-        if(searchData.size() == 0) {
-            updateTable();
-        } else {
-            wholeTableObject.setItems(searchData);
-        }
-    }
-
-    private void changeTableToFoundNames() {
-        ObservableList<listItem> searchData = FXCollections.observableArrayList();
-
-        searchData = model.getItemsByName();
-
-        if(searchData.size() == 0) {
-            updateTable();
-        } else {
-            wholeTableObject.setItems(searchData);
-        }
+        wholeTableObject.setItems(searchData);
     }
 
     private void updateTable() {
         wholeTableObject.setItems(model.tableData);
-    }
-
-    private void blank() {
-        existingName.setText("");
-        existingSerialNumber.setText("");
     }
 }

@@ -14,7 +14,7 @@
 
 <BorderPane prefHeight="550.0" prefWidth="850.0" stylesheets="@TableCSS.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <VBox alignment="CENTER" prefWidth="7.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -66,19 +66,23 @@
       </HBox>
    </top>
    <right>
-      <VBox prefWidth="7.0" BorderPane.alignment="CENTER" />
+      <VBox BorderPane.alignment="CENTER" />
    </right>
    <bottom>
-      <HBox prefHeight="10.0" BorderPane.alignment="CENTER" />
+      <HBox BorderPane.alignment="CENTER" />
    </bottom>
    <center>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="searchBar" onAction="#searchTable" promptText="Enter a Serial Number Or Name" styleClass="textfield">
-               <VBox.margin>
+            <HBox spacing="10.0">
+               <children>
+                  <TextField fx:id="searchBar" promptText="Enter a Serial Number Or Name" styleClass="textfield" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#clearSearchBarButton" text="Clear" />
+               </children>
+               <padding>
                   <Insets left="5.0" right="5.0" />
-               </VBox.margin>
-            </TextField>
+               </padding>
+            </HBox>
             <TableView fx:id="wholeTableObject" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="valueColumn" maxWidth="-1.0" minWidth="268.0" prefWidth="-1.0" text="Value" />
@@ -87,6 +91,9 @@
               </columns>
             </TableView>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="7.0" left="7.0" right="7.0" />
+         </BorderPane.margin>
       </VBox>
    </center>
 </BorderPane>

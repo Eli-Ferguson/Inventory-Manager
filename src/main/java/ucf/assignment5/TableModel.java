@@ -131,29 +131,6 @@ public class TableModel extends errorMessages {
         removeItemBySerial(serialNum);
     }
 
-    public ObservableList<listItem> getItemsBySerial() {
-        
-        String getBySerial = searcher.existingSerialNumber.getText();
-
-        return getItems(getBySerial, "Serial Number");
-    }
-
-    public ObservableList<listItem> getItemsByName() {
-        
-        String getByName = searcher.existingName.getText();
-        ObservableList<listItem> returnArr = FXCollections.observableArrayList();
-
-        if(!getByName.equals(null)) {
-            returnArr = getItems(getByName, "Name");
-            if(returnArr.size() == 0) {
-                noItemsFound();
-            }
-        } else {
-            blankField();
-        }
-        return returnArr;
-    }
-
     public void saveFile() {
         FileManager manager = new FileManager(this.tableData);
 
@@ -275,15 +252,26 @@ public class TableModel extends errorMessages {
             //
             for(listItem i : tableData) {
                 if(i.getSerialNumber().contains(searchingFor)) {
-                    if(!indicies.contains(serials.indexOf(i.getSerialNumber()))) {
+
+                    int index = serials.indexOf(i.getSerialNumber());
+                    boolean pass = !indicies.contains(index);
+
+                    if(pass) {
                         returnArr.add(i);
-                        indicies.add(serials.indexOf(searchingFor));
+                        indicies.add(serials.indexOf(i.getSerialNumber()));
                     }
                 }
                 if(i.getName().contains(searchingFor)) {
-                    if(!indicies.contains(names.indexOf(i.getName()))) {
+                    
+                    int index = names.indexOf(i.getName());
+
+                    //indicies list - [1, 2, 3, 4]
+
+                    boolean pass = !indicies.contains(index); // boolean - either true or false
+
+                    if(pass) {
                         returnArr.add(i);
-                        indicies.add(names.indexOf(searchingFor));
+                        indicies.add(names.indexOf(i.getName()));
                     }
                 }
             }

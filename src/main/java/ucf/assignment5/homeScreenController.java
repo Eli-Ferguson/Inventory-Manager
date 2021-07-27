@@ -84,6 +84,12 @@ public class homeScreenController implements Initializable{
         stage.show();
     }
 
+    public void clearSearchBarButton(ActionEvent actionEvent) {
+        searchBar.setText("");
+
+        updateTable();
+    }
+
     public void saveFile(ActionEvent actionEvent) {
         System.out.println("Save File");
 
@@ -104,12 +110,6 @@ public class homeScreenController implements Initializable{
         System.out.println("Help");
 
         model.help();
-    }
-
-    public void searchTable(ActionEvent actionEvent) {
-        System.out.println("Search button hit homescreen");
-
-        changeTableToFoundItems();
     }
 
     private void changeTableToFoundItems() {
